@@ -1,0 +1,41 @@
+{
+  "name": {
+    "message": "Metadata viewer"
+  },
+  "description": {
+    "message": "View metadata of the current website inside Chrome Devtools."
+  },
+
+  "btnMetadata": {
+    "message": "Metadata"
+  },
+
+  "btnStructuredData": {
+    "message": "Structured Data"
+  },
+
+  "cat_metadata_html": {
+    "message": "Hypertext Markup Langauge"
+  },
+  "cat_metadata_css": {
+    "message": "Cascading Style Sheets"
+  },
+  "cat_metadata_ogp": {
+    "message": "Open Graph Protcol"
+  },
+  "cat_metadata_twitter": {
+    "message": "X (formerly Twitter)"
+  },
+  "cat_metadata_apple": {
+    "message": "Apple"
+  },
+  "cat_metadata_facebook": {
+    "message": "Facebook"
+  },
+  "cat_metadata_crawler": {
+    "message": "Crawler"
+  },
+  "cat_metadata_other": {
+    "message": "Other Metadata"
+  }
+}

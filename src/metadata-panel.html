@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Metadata Viewer</title>
+
+    <link rel="stylesheet" href="css/metadata-panel.css">
+    <script src="js/metadata-panel.js" type="module" defer></script>
+</head>
+<body>
+    <div class="tabs">
+        <div role="tablist">
+            <button
+                    id="btn-metadata"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="tabpanel-metadata"
+                    data-intl="btnMetadata"
+            >
+            </button>
+
+            <button
+                    id="btn-structured-data"
+                    type="button"
+                    role="tab"
+                    aria-controls="tabpanel-structured-data"
+                    data-intl="btnStructuredData"
+            >
+            </button>
+        </div>
+
+        <div
+                id="tabpanel-metadata"
+                role="tabpanel"
+                aria-labelledby="btn-metadata"
+        >
+        </div>
+
+        <div
+                id="tabpanel-structured-data"
+                role="tabpanel"
+                aria-labelledby="btn-structured-data"
+                class="is-hidden"
+        >
+        </div>
+</body>
+</html>
