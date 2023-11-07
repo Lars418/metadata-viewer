@@ -5,37 +5,26 @@
   "description": {
     "message": "View metadata of the current website inside Chrome Devtools."
   },
+  "noRefreshHint": {
+    "message": "Metadata will not refresh until devtools are closed and opened again."
+  },
 
   "btnMetadata": {
     "message": "Metadata"
+  },
+  "btnCloseDialog": {
+    "message": "Close dialog"
   },
 
   "btnStructuredData": {
     "message": "Structured Data"
   },
 
-  "cat_metadata_html": {
-    "message": "Hypertext Markup Langauge"
+  "metatagTitle": {
+    "message": "Click to show more details"
   },
-  "cat_metadata_css": {
-    "message": "Cascading Style Sheets"
-  },
-  "cat_metadata_ogp": {
-    "message": "Open Graph Protcol"
-  },
-  "cat_metadata_twitter": {
-    "message": "X (formerly Twitter)"
-  },
-  "cat_metadata_apple": {
-    "message": "Apple"
-  },
-  "cat_metadata_facebook": {
-    "message": "Facebook"
-  },
-  "cat_metadata_crawler": {
-    "message": "Crawler"
-  },
-  "cat_metadata_other": {
-    "message": "Other Metadata"
+
+  "metatagDialogSpecification": {
+    "message": "Specification"
   }
 }

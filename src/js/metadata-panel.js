@@ -1,20 +1,26 @@
 applyTranslations(document);
-addTabsLogic();
 
-chrome.tabs.query({ active: true, currentWindow: true}, (tabs) => {
-    const currentTabId = tabs[0]?.id;
+const metadataPanel = document.getElementById('tabpanel-metadata');
 
-    chrome.tabs.sendMessage(currentTabId, { action: 'GET_META_TAGS'}, async (response) => {
-        if (!response) {
-            return;
-        }
+// region INIT
+const currentTab = (await chrome.tabs.query({ currentWindow: true, active: true }))?.[0];
+const response = await chrome.tabs.sendMessage(currentTab?.id, { type: 'GET_METADATA' });
+const preparedMetadata = await getPreparedMetadata(response.metadata, response.url);
 
-        const metadataContainer = document.querySelector('#tabpanel-metadata');
-        const preparedMetadata = await getPreparedMetadata(response.metadata, response.url);
+metadataPanel.innerHTML = createMetadataTables(preparedMetadata);
 
-        metadataContainer.innerHTML = createMetadataTables(preparedMetadata);
-    });
-});
+addLogic();
+// endregion
+
+/*chrome.runtime.onMessage.addListener(async (message) => {
+    if (message.type === 'UPDATE_METADATA') {
+        const preparedMetadata = await getPreparedMetadata(message.metadata, message.url);
+
+        metadataPanel.innerHTML = createMetadataTables(preparedMetadata);
+    }
+
+    return true;
+});*/
 
 async function getPreparedMetadata(rawMetadata, url) {
     const baseUrl = `http://localhost:3003/v1/url/${encodeURIComponent(url)}/metadata`;
@@ -56,39 +62,15 @@ function applyTranslations(document) {
     });
 }
 
-function addTabsLogic() {
-    const tabs = Array.from(document.querySelectorAll('button[role="tab"]'));
-
-    tabs.forEach((button) => {
-        button.addEventListener('click', () => {
-               if (button.hasAttribute('aria-selected')) {
-                   return;
-               }
-
-               tabs.forEach((tab) => {
-                   const tabPanel = document.querySelector(`div[role="tabpanel"][aria-labelledby="${tab.id}"]`);
-
-                   tab.removeAttribute('aria-selected');
-                   tabPanel.classList.remove('is-hidden');
-               });
-
-               const activeTabPanel = document.querySelector(`div[role="tabpanel"][aria-labelledby="${button.id}"]`);
-
-               button.setAttribute('aria-selected', 'true');
-               activeTabPanel.classList.remove('is-hidden');
-        });
-    })
-}
-
 function createMetadataTables(metadata) {
     let html = '';
 
     for (const category in metadata) {
-        const { entries, description, prefix } = metadata[category];
+        const { title, entries, description, prefix } = metadata[category];
 
         html +=
 `
-<h2 class="metadata-category">${chrome.i18n.getMessage(`cat_metadata_${category}`)}</h2>
+<h2 class="metadata-category">${title}</h2>
 ${description ? `<p class="metadata-description">${description}</p>` : ''}
 
 <table class="metadata-table">
@@ -96,7 +78,6 @@ ${description ? `<p class="metadata-description">${description}</p>` : ''}
     <tr>
         <th>Name</th>
         <th>Value</th>
-        <th></th>
         <!--
         <th>Description</th>
         <th>Type</th>
@@ -114,35 +95,41 @@ ${description ? `<p class="metadata-description">${description}</p>` : ''}
             html +=
 `
 <tr>
-    <td
-        ${content.description ? `title="${content.description}"` : ''}
-    >
-        <code>
-            ${
+    <td>
+        ${category === 'other' ? (
+`
+            <code${content.deprecated ? ' class="is-deprecated-metatag"' : ''}>
+                            ${
                 entry?.toLowerCase().startsWith(prefix?.toLowerCase())
-                ? `<span class="metadata-prefix">${prefix}</span><pre>${entry.slice(prefix.length)}</pre>`
-                : `<pre>${entry}</pre>`
+                    ? `<span class="metadata-prefix">${prefix}</span><span>${entry.slice(prefix.length)}</span>`
+                    : `<span>${entry}</span>`
             }
-        </code>
+            </code>
+`     
+) : (
+`
+        <button
+            class="metadata-tag"
+            data-content="${window.btoa(encodeURIComponent(JSON.stringify(content)))}"
+            data-name="${entry}"
+            title="${chrome.i18n.getMessage('metatagTitle')}"
+            >
+            <code${content.deprecated ? ' class="is-deprecated-metatag"' : ''}>
+                ${
+    entry?.toLowerCase().startsWith(prefix?.toLowerCase())
+        ? `<span class="metadata-prefix">${prefix}</span><span>${entry.slice(prefix.length)}</span>`
+        : `<span>${entry}</span>`
+}
+            </code>
+        </button>
+`  
+)}
     </td>
     <td>
         <code>
             <pre>${content.value.map(x => `<div>${x}</div>`).join('')}</pre>
         </code>
     </td>
-    <td>
-        <button
-            data-category="${entry}"
-            data-content="${window.btoa(JSON.stringify(content))}"
-        >
-            ?
-        </button>
-    </td>
-    <!--
-    <td>${content.type}</td>
-    <td>${content.example?.replace(/</g, '&lt;')?.replace(/>/g, '&gt;')}</td>
-    <td>${content.specUrl}</td>
-    -->
 </tr>
 `;
         }
@@ -151,4 +138,63 @@ ${description ? `<p class="metadata-description">${description}</p>` : ''}
     }
 
     return html;
+}
+
+function addLogic() {
+    const tabs = Array.from(document.querySelectorAll('button[role="tab"]'));
+
+    tabs.forEach((button) => {
+        button.addEventListener('click', () => {
+            if (button.hasAttribute('aria-selected')) {
+                return;
+            }
+
+            tabs.forEach((tab) => {
+                const tabPanel = document.querySelector(`div[role="tabpanel"][aria-labelledby="${tab.id}"]`);
+
+                tab.removeAttribute('aria-selected');
+                tabPanel.classList.add('is-hidden');
+            });
+
+            const activeTabPanel = document.querySelector(`div[role="tabpanel"][aria-labelledby="${button.id}"]`);
+
+            button.setAttribute('aria-selected', 'true');
+            activeTabPanel.classList.remove('is-hidden');
+        });
+    });
+
+    // Metatag dialog
+    const dialog = document.getElementById('metatag-info-dialog');
+    const title = document.getElementById('metatag-info-tagname');
+    const description = document.getElementById('metatag-info-description');
+    const example = document.getElementById('metatag-info-example');
+    const specification = document.getElementById('metatag-info-specification');
+    const closeBtn = document.getElementById('metatag-info-close');
+
+    closeBtn.addEventListener('click', () => dialog.close());
+
+    document.querySelectorAll('button.metadata-tag').forEach((button) => {
+        button.addEventListener('click', () => {
+            const content = JSON.parse(decodeURIComponent(window.atob(button.dataset.content)));
+
+            title.textContent = button.dataset.name;
+            description.textContent = content.description;
+
+            if (content.example) {
+                example.classList.remove('is-hidden');
+                example.innerHTML = Prism.highlight(content.example, Prism.languages.html, 'html');
+            } else {
+                example.classList.add('is-hidden');
+            }
+
+            if (content.specUrl) {
+                specification.classList.remove('is-hidden');
+                specification.href = content.specUrl;
+            } else {
+                specification.classList.add('is-hidden');
+            }
+
+            dialog.showModal();
+        });
+    });
 }

@@ -8,9 +8,17 @@
     <title>Metadata Viewer</title>
 
     <link rel="stylesheet" href="css/metadata-panel.css">
+    <link rel="stylesheet" href="css/prism.css">
+
+    <script src="js/prism.js" defer></script>
     <script src="js/metadata-panel.js" type="module" defer></script>
 </head>
 <body>
+    <div
+        class="no-refresh-hint"
+        data-intl="noRefreshHint"
+    ></div>
+
     <div class="tabs">
         <div role="tablist">
             <button
@@ -47,5 +55,22 @@
                 class="is-hidden"
         >
         </div>
+
+        <dialog id="metatag-info-dialog">
+            <button
+                    id="metatag-info-close"
+                    data-intl-title="btnCloseDialog"
+            >&times;</button>
+
+            <h2 id="metatag-info-tagname"></h2>
+            <p id="metatag-info-description"></p>
+
+            <code id="metatag-info-example"></code>
+            <a
+                target="_blank"
+                id="metatag-info-specification"
+                data-intl="metatagDialogSpecification"
+            ></a>
+        </dialog>
 </body>
 </html>

@@ -1,24 +1,25 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    const metadata = getAllMetadata();
-    const url = window.location.href;
+    console.log('Message received in content-script.js: ', message);
 
-    sendResponse({
-        metadata,
-        url
-    });
+    if (message.type === 'GET_METADATA') {
+        sendResponse({
+            type: 'FORWARD_METADATA',
+            url: window.location.href,
+            metadata: getAllMetadata(),
+        });
+    }
 
     return true;
 });
-
 function prepareMetaElement(element) {
     const key =
         element.getAttribute('name')
-        || element.getAttribute('property')
-        || element.getAttribute('itemprop')
-        || element.getAttribute('http-equiv')
-        || (element.attributes.length > 0 ? element.attributes[0].name : 'UNKNOWN');
-    const value = element.getAttribute('content')
-        || (element.attributes.length > 0 ? element.attributes[0].value : 'UNKNOWN');
+        ?? element.getAttribute('property')
+        ?? element.getAttribute('itemprop')
+        ?? element.getAttribute('http-equiv')
+        ?? (element.attributes.length > 0 ? element.attributes[0].name : 'UNKNOWN');
+    const value = element.getAttribute('content') ?? element.getAttribute('charset');
+        //?? (element.attributes.length > 0 ? element.attributes[0].value : 'UNKNOWN');
 
     return [key, value];
 }
@@ -26,7 +27,10 @@ function prepareMetaElement(element) {
 function getAllMetadata() {
     const metaElements = document.querySelectorAll('meta');
 
-    const metadata = Array.from(metaElements).map(metaElement => prepareMetaElement(metaElement));
+    const metadata = Array.from(metaElements)
+        .filter(element => element.attributes.length > 0)
+        .filter(element => !element.hasAttribute('itemprop')) // don't show microdata
+        .map(metaElement => prepareMetaElement(metaElement));
     const preparedMetadata = {};
 
     metadata.forEach(metadata => {
