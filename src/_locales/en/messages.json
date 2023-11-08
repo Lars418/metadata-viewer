@@ -26,5 +26,26 @@
 
   "metatagDialogSpecification": {
     "message": "Specification"
+  },
+  "metatagDialogSpecificationTitle": {
+    "message": "View specification"
+  },
+  "metatagDialogTypeTitle": {
+    "message": "Metatag type"
+  },
+  "metatagInfoDeprecated": {
+    "message": "Deprecated"
+  },
+  "metatagInvalidValueTitle": {
+    "message": "Invalid value"
+  },
+  "metatagInfoDeprecatedTitle": {
+    "message": "This metatag is deprecated and should not be used anymore."
+  },
+  "metatagInfoExampleTitle": {
+    "message": "Example usage"
+  },
+  "metatagInfoEnumValues": {
+    "message": "Supported enum values"
   }
 }

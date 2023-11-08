@@ -78,12 +78,6 @@ ${description ? `<p class="metadata-description">${description}</p>` : ''}
     <tr>
         <th>Name</th>
         <th>Value</th>
-        <!--
-        <th>Description</th>
-        <th>Type</th>
-        <th>Example</th>
-        <th>Specification</th>
-        -->
     </tr>
 </thead>
 <tbody>
@@ -126,9 +120,7 @@ ${description ? `<p class="metadata-description">${description}</p>` : ''}
 )}
     </td>
     <td>
-        <code>
-            <pre>${content.value.map(x => `<div>${x}</div>`).join('')}</pre>
-        </code>
+        <code${content.isInvalidValue ? ` class="is-invalid-value" title="${chrome.i18n.getMessage('metatagInvalidValueTitle')}"` : ''}>${content.value.map(x => `<span>${x}</span>`).join('')}</code>
     </td>
 </tr>
 `;
@@ -167,8 +159,13 @@ function addLogic() {
     const dialog = document.getElementById('metatag-info-dialog');
     const title = document.getElementById('metatag-info-tagname');
     const description = document.getElementById('metatag-info-description');
+    const exampleWrapper = document.getElementById('metatag-info-example-wrapper');
     const example = document.getElementById('metatag-info-example');
     const specification = document.getElementById('metatag-info-specification');
+    const enumWrapper = document.getElementById('metatag-info-enum-values-wrapper');
+    const enumList = document.getElementById('metatag-info-enum-values');
+    const type = document.getElementById('metatag-info-type');
+    const deprecated = document.getElementById('metatag-info-deprecated');
     const closeBtn = document.getElementById('metatag-info-close');
 
     closeBtn.addEventListener('click', () => dialog.close());
@@ -179,12 +176,13 @@ function addLogic() {
 
             title.textContent = button.dataset.name;
             description.textContent = content.description;
+            type.textContent = content.type;
 
             if (content.example) {
-                example.classList.remove('is-hidden');
+                exampleWrapper.classList.remove('is-hidden');
                 example.innerHTML = Prism.highlight(content.example, Prism.languages.html, 'html');
             } else {
-                example.classList.add('is-hidden');
+                exampleWrapper.classList.add('is-hidden');
             }
 
             if (content.specUrl) {
@@ -192,6 +190,24 @@ function addLogic() {
                 specification.href = content.specUrl;
             } else {
                 specification.classList.add('is-hidden');
+            }
+
+            if (content.type === 'enum') {
+                enumList.innerHTML = '';
+
+                content.enumValues.forEach((value) => {
+                    enumList.innerHTML += `<li><code>${value}</code></li>`;
+                });
+
+                enumWrapper.classList.remove('is-hidden');
+            } else {
+                enumWrapper.classList.add('is-hidden');
+            }
+
+            if (content.deprecated) {
+                deprecated.classList.remove('is-hidden');
+            } else {
+                deprecated.classList.add('is-hidden');
             }
 
             dialog.showModal();

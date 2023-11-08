@@ -45,32 +45,56 @@
                 id="tabpanel-metadata"
                 role="tabpanel"
                 aria-labelledby="btn-metadata"
-        >
-        </div>
+        ></div>
 
         <div
                 id="tabpanel-structured-data"
                 role="tabpanel"
                 aria-labelledby="btn-structured-data"
                 class="is-hidden"
-        >
-        </div>
+        ></div>
 
-        <dialog id="metatag-info-dialog">
+    </div>
+
+    <dialog id="metatag-info-dialog">
             <button
                     id="metatag-info-close"
                     data-intl-title="btnCloseDialog"
             >&times;</button>
 
             <h2 id="metatag-info-tagname"></h2>
+
+            <div class="metatag-metadata">
+                <a
+                    target="_blank"
+                    id="metatag-info-specification"
+                    data-intl="metatagDialogSpecification"
+                    data-intl-title="metatagDialogSpecificationTitle"
+                ></a>
+
+                <span
+                    id="metatag-info-type"
+                    data-intl-title="metatagDialogTypeTitle"
+                ></span>
+
+                <span
+                    id="metatag-info-deprecated"
+                    data-intl="metatagInfoDeprecated"
+                    data-intl-title="metatagInfoDeprecatedTitle"
+                ></span>
+            </div>
+
             <p id="metatag-info-description"></p>
 
-            <code id="metatag-info-example"></code>
-            <a
-                target="_blank"
-                id="metatag-info-specification"
-                data-intl="metatagDialogSpecification"
-            ></a>
+            <div id="metatag-info-example-wrapper">
+                <h3 data-intl="metatagInfoExampleTitle"></h3>
+                <code id="metatag-info-example"></code>
+            </div>
+
+            <div id="metatag-info-enum-values-wrapper">
+                <h3 data-intl="metatagInfoEnumValues"></h3>
+                <ul id="metatag-info-enum-values"></ul>
+            </div>
         </dialog>
 </body>
 </html>

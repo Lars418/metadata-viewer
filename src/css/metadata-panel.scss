@@ -2,7 +2,9 @@
     --primary: #A8C7FAFF;
     --color: #e3e3e3;
     --bg-color: #282828;
-    --max-dialog-width: 45rem;
+    --warning-color: rgb(255, 226, 183);
+    --warning-bg-color: rgb(25, 18, 7);
+    --max-dialog-width: 55rem;
 }
 
 body {
@@ -19,8 +21,8 @@ body {
 }
 
 div.no-refresh-hint {
-    background-color: rgb(25, 18, 7);
-    color: rgb(255, 226, 183);
+    background-color: var(--warning-bg-color);
+    color: var(--warning-color);
     padding: 0.65rem 0.5rem;
     text-align: center;
 }
@@ -57,7 +59,7 @@ div[role="tabpanel"] {
 }
 
 .is-hidden {
-    display: none;
+    display: none !important;
 }
 
 h2.metadata-category {
@@ -117,12 +119,22 @@ table {
 
                 > span {
                     margin: 0;
+                    white-space: nowrap;
                 }
             }
         }
 
-        &:nth-child(1) > code {
-            white-space: nowrap;
+        &:nth-child(2) > code {
+            &.is-invalid-value {
+                color: var(--warning-color);
+                background-color: var(--warning-bg-color);
+            }
+
+            > span {
+                display: inline-block;
+                margin: 0.15rem 0;
+                word-break: break-all;
+            }
         }
     }
 }
@@ -135,11 +147,11 @@ dialog#metatag-info-dialog {
     border: none;
     border-radius: 0.25rem;
     font-size: 14px;
-    padding: 1rem;
+    padding: 1.75rem;
     position: relative;
 
     > #metatag-info-close {
-        font-size: 18px;
+        font-size: 24px;
         position: absolute;
         top: 0.25rem;
         right: 0.5rem;
@@ -159,10 +171,47 @@ dialog#metatag-info-dialog {
     }
 
     > h2 {
-        margin-top: 0;
+        margin: 0 0 0.6rem 0;
+        font-size: 1.2rem;
+    }
+
+    > .metatag-metadata {
+        display: flex;
+        gap: 0 0.35rem;
+
+        > a, a:active, a:visited, span {
+            display: inline-flex;
+            border-radius: 0.25rem;
+            background-color: #595959;
+            padding: 0.2rem 0.35rem;
+            text-decoration: none;
+            font-size: 11px;
+            color: inherit;
+        }
+
+        > a:not(.is-hidden) {
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    > p {
+        margin: 1.5rem 0;
+    }
+
+    > div:not(.metatag-metadata) {
+        &:not(:last-of-type) {
+            margin: 1.5rem 0;
+        }
+
+        > h3 {
+            margin: 0 0 0.5rem 0;
+            font-weight: normal;
+        }
     }
 
     &::backdrop {
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.7);
     }
 }
