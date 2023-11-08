@@ -103,6 +103,10 @@ table {
 
             &:hover {
                 color: var(--primary);
+
+                > code > span.metadata-prefix {
+                    color: var(--primary);
+                }
             }
 
             > code {
