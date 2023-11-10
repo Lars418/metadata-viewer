@@ -6,7 +6,7 @@
     "message": "View metadata of the current website inside Chrome Devtools."
   },
   "noRefreshHint": {
-    "message": "Metadata will not refresh until devtools are closed and opened again."
+    "message": "Metadata will not refresh until devtools are re-opened."
   },
 
   "btnMetadata": {
@@ -47,5 +47,9 @@
   },
   "metatagInfoEnumValues": {
     "message": "Supported enum values"
+  },
+
+  "structuredDataComingSoon": {
+    "message": "Coming soon!"
   }
 }

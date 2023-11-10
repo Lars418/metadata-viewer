@@ -23,7 +23,8 @@ body {
 div.no-refresh-hint {
     background-color: var(--warning-bg-color);
     color: var(--warning-color);
-    padding: 0.65rem 0.5rem;
+    padding: 0.35rem;
+    font-size: 10px;
     text-align: center;
 }
 
@@ -144,6 +145,10 @@ table {
 }
 
 dialog#metatag-info-dialog {
+    top: 50%;
+    left: 50%;
+    margin: 0;
+    transform: translate(-50%, -50%);
     background-color: var(--bg-color);
     color: var(--color);
     width: 100%;
@@ -152,7 +157,7 @@ dialog#metatag-info-dialog {
     border-radius: 0.25rem;
     font-size: 14px;
     padding: 1.75rem;
-    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 10px 18px -8px, rgba(0, 0, 0, 0.14) 0px 26px 42px 3px, rgba(0, 0, 0, 0.12) 0px 9px 42px 8px;
 
     > #metatag-info-close {
         font-size: 24px;
