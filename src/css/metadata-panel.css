@@ -1,0 +1,210 @@
+:root {
+  --primary: #A8C7FAFF;
+  --color: #e3e3e3;
+  --bg-color: #282828;
+  --warning-color: rgb(255, 226, 183);
+  --warning-bg-color: rgb(25, 18, 7);
+  --max-dialog-width: 55rem;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  cursor: default;
+  font-family: ".SFNSDisplay-Regular", "Helvetica Neue", "Lucida Grande", sans-serif;
+  font-size: 12px;
+  tab-size: 4;
+  color: var(--color);
+  background: var(--bg-color);
+}
+
+div.no-refresh-hint {
+  background-color: var(--warning-bg-color);
+  color: var(--warning-color);
+  padding: 0.35rem;
+  font-size: 10px;
+  text-align: center;
+}
+
+div[role=tablist] {
+  display: flex;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #474747FF;
+}
+div[role=tablist] > button[role=tab] {
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  color: #C7C7C7FF;
+  padding: 6px 0.6rem 2px 0.6rem;
+  line-height: 16px;
+  border: none;
+}
+div[role=tablist] > button[role=tab][aria-selected=true] {
+  color: var(--primary);
+  border-bottom: 1px solid var(--primary);
+}
+div[role=tablist] > button[role=tab]:hover {
+  color: #e8eaed;
+  background-color: rgba(253, 252, 251, 0.1);
+}
+div[role=tablist] > a.support-email, div[role=tablist] a.support-email:visited {
+  margin: 0 6px 0 auto;
+  color: #C7C7C7FF;
+  text-decoration: none;
+  padding: 6px 0.6rem 2px 0.6rem;
+  line-height: 16px;
+}
+
+div[role=tabpanel] {
+  padding: 0 0.6rem;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+h2.metadata-category {
+  font-size: 1.2rem;
+  margin: 0 0 0.1rem 0;
+}
+
+p.metadata-description {
+  margin: 0;
+  color: #8f8f8f;
+}
+
+span.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+}
+
+table {
+  margin: 1rem 0 2.5rem 0;
+  border-spacing: 0 0.35rem;
+}
+table > thead > tr > th {
+  text-align: left;
+}
+table > thead > tr > th:not(:last-of-type) {
+  padding-right: 0.75rem;
+}
+table > tbody > tr > td:not(:last-of-type) {
+  padding-right: 0.75rem;
+}
+table > tbody > tr > td > button {
+  display: inline;
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  cursor: pointer;
+  transition: color 125ms;
+  color: inherit;
+}
+table > tbody > tr > td > button:hover {
+  color: var(--primary);
+}
+table > tbody > tr > td > button:hover > code > span.metadata-prefix {
+  color: var(--primary);
+}
+table > tbody > tr > td > button > code {
+  display: flex;
+}
+table > tbody > tr > td > button > code.is-deprecated-metatag {
+  text-decoration: line-through;
+  opacity: 0.85;
+}
+table > tbody > tr > td > button > code > .metadata-prefix {
+  color: #8f8f8f;
+}
+table > tbody > tr > td > button > code > span {
+  margin: 0;
+  white-space: nowrap;
+}
+table > tbody > tr > td:nth-child(2) > code.is-invalid-value {
+  color: var(--warning-color);
+  background-color: var(--warning-bg-color);
+}
+table > tbody > tr > td:nth-child(2) > code > span {
+  display: block;
+  margin: 0.15rem 0;
+  word-break: break-all;
+}
+
+dialog#metatag-info-dialog {
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  background-color: var(--bg-color);
+  color: var(--color);
+  width: 100%;
+  max-width: var(--max-dialog-width);
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 14px;
+  padding: 1.75rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 10px 18px -8px, rgba(0, 0, 0, 0.14) 0px 26px 42px 3px, rgba(0, 0, 0, 0.12) 0px 9px 42px 8px;
+}
+dialog#metatag-info-dialog > #metatag-info-close {
+  font-size: 24px;
+  position: absolute;
+  top: 0.25rem;
+  right: 0.5rem;
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  cursor: pointer;
+  color: inherit;
+  transition: opacity 125ms;
+}
+dialog#metatag-info-dialog > #metatag-info-close:hover {
+  opacity: 0.85;
+}
+dialog#metatag-info-dialog > h2 {
+  margin: 0 0 0.6rem 0;
+  font-size: 1.2rem;
+}
+dialog#metatag-info-dialog > .metatag-metadata {
+  display: flex;
+  gap: 0 0.35rem;
+}
+dialog#metatag-info-dialog > .metatag-metadata > a, dialog#metatag-info-dialog > .metatag-metadata a:active, dialog#metatag-info-dialog > .metatag-metadata a:visited, dialog#metatag-info-dialog > .metatag-metadata span {
+  display: inline-flex;
+  border-radius: 0.25rem;
+  background-color: #595959;
+  padding: 0.2rem 0.35rem;
+  text-decoration: none;
+  font-size: 11px;
+  color: inherit;
+}
+dialog#metatag-info-dialog > .metatag-metadata > a:not(.is-hidden):hover {
+  text-decoration: underline;
+}
+dialog#metatag-info-dialog > p {
+  margin: 1.5rem 0;
+}
+dialog#metatag-info-dialog > div:not(.metatag-metadata):not(:last-of-type) {
+  margin: 1.5rem 0;
+}
+dialog#metatag-info-dialog > div:not(.metatag-metadata) > h3 {
+  margin: 0 0 0.5rem 0;
+  font-weight: normal;
+}
+dialog#metatag-info-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/*# sourceMappingURL=metadata-panel.css.map */

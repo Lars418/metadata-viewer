@@ -5,9 +5,16 @@ const metadataPanel = document.getElementById('tabpanel-metadata');
 // region INIT
 const currentTab = (await chrome.tabs.query({ currentWindow: true, active: true }))?.[0];
 const response = await chrome.tabs.sendMessage(currentTab?.id, { type: 'GET_METADATA' });
-const preparedMetadata = await getPreparedMetadata(response.metadata, response.url);
 
-metadataPanel.innerHTML = createMetadataTables(preparedMetadata);
+metadataPanel.innerHTML = `<span class="loading-indicator">${chrome.i18n.getMessage('loading')}</span>`;
+
+try {
+    const preparedMetadata = await getPreparedMetadata(response.metadata, response.url);
+
+    metadataPanel.innerHTML = createMetadataTables(preparedMetadata);
+} catch (e) {
+    metadataPanel.innerHTML = `Failed to load metadata: ${e.message}`;
+}
 
 addLogic();
 // endregion
@@ -23,13 +30,18 @@ addLogic();
 });*/
 
 async function getPreparedMetadata(rawMetadata, url) {
-    const baseUrl = `http://localhost:3003/v1/url/${encodeURIComponent(url)}/metadata`;
+    const { debug } = await chrome.storage.local.get('debug');
+    const baseUrl = `https://api.koelker.dev/v1/url/${encodeURIComponent(window.btoa(url))}/metadata`;
+    const headers = { 'Content-Type': 'application/json' };
+
+    if (debug === true) {
+        headers['x-metadata-debug'] = 'true';
+    }
+
     const response = await fetch(baseUrl, {
         method: 'POST',
         body: JSON.stringify(rawMetadata),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers
     });
 
     if (!response.ok) {

@@ -1,9 +1,9 @@
 {
   "name": {
-    "message": "Metadata viewer"
+    "message": "Metadata Viewer"
   },
   "description": {
-    "message": "View metadata of the current website inside Chrome Devtools."
+    "message": "View metadata of the current website inside Devtools."
   },
   "noRefreshHint": {
     "message": "Metadata will not refresh until devtools are re-opened."
@@ -18,6 +18,10 @@
 
   "btnStructuredData": {
     "message": "Structured Data"
+  },
+
+  "loading": {
+    "message": "Loading..."
   },
 
   "metatagTitle": {
